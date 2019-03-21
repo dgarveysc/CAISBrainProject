@@ -8,25 +8,26 @@ WAV_FILE=""
 
 > "file_list.txt"
 
-BASE_DIR="/hdd/datasets/Moments_in_Time_Mini/training"
+BASE_DIR="/hdd/datasets/Moments_in_Time_Mini/validation"
 DIR=""
 ACTION=""
+
 for filename in $BASE_DIR/*; do
 
     DIR=$filename
-    echo $DIR
-    echo $BASE_DIR
+    #echo $DIR
+    #echo $BASE_DIR
 
     #split directory name to get the action
     IFS='/'
     read -ra ADDR <<< "$DIR"
     ACTION="${ADDR[5]}"
-    echo $ACTION
+    #echo $ACTION
     
     IFS=' '
 
-    #make a directory in /hdd/datasets/Moments_in_Time_Mini/training-sound for each action - DONE
-    #mkdir -p /hdd/datasets/Moments_in_Time_Mini/training-sound/$ACTION;
+    #make a directory in /hdd/datasets/Moments_in_Time_Mini/training-sound for each action
+    mkdir -p /hdd/datasets/Moments_in_Time_Mini/validation-sound/$ACTION;
 
     for file in $filename/*; do
         #echo $file
@@ -53,27 +54,12 @@ for filename in $BASE_DIR/*; do
             echo $ACTION/$WAV_FILE >> "file_list.txt"
 
             #add WAV file to the directory of that action
-            mv $WAV_FILE /hdd/datasets/Moments_in_Time_Mini/training-sound/$ACTION
+            mv $WAV_FILE /hdd/datasets/Moments_in_Time_Mini/validation-sound/$ACTION
             
-            
-            : '
-            for i in *.mp4; do
-                FILENAME="${i%.*}"
-                AAC_FILE="$FILENAME$AAC_EX"
-                WAV_FILE="$FILENAME$WAV_EX" #each WAV file will have a name <mp4 name>.wav
-                ffmpeg -i $i -vn -b:a 128k -c:a aac $AAC_FILE
-                ffmpeg -i $AAC_FILE $WAV_FILE
-                rm $AAC_FILE
-                echo $ACTION/$WAV_FILE >> "file_list.txt"
-
-                #add WAV file to the directory of that action
-                mv $WAV_FILE /hdd/datasets/Moments_in_Time_Mini/training-sound/$ACTION
-            done
-            '
         fi
     done
 
 done
 
-#mv file_list.txt /hdd/datasets/Moments_in_Time_Mini/training_sound/
+mv file_list.txt /hdd/datasets/Moments_in_Time_Mini/validation-sound/
 #python3 wav2spec.py
