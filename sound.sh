@@ -27,8 +27,9 @@ for filename in $BASE_DIR/*; do
     IFS=' '
 
     #make a directory in /hdd/datasets/Moments_in_Time_Mini/training-sound for each action
-    mkdir -p /hdd/datasets/Moments_in_Time_Mini/validation-sound/$ACTION;
+    mkdir -p /hdd/datasets/Moments_in_Time_Mini/validation-spec/$ACTION;
 
+    : '
     for file in $filename/*; do
         #echo $file
         if [[ $file == *.mp4 ]]; then
@@ -58,8 +59,9 @@ for filename in $BASE_DIR/*; do
             
         fi
     done
+    '
 
 done
 
-mv file_list.txt /hdd/datasets/Moments_in_Time_Mini/validation-sound/
+#mv file_list.txt /hdd/datasets/Moments_in_Time_Mini/validation-sound/
 #python3 wav2spec.py
